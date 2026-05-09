@@ -1,0 +1,219 @@
+﻿
+-------------------------------------------------------------------------------
+   ROBOCOPY     ::     Robust File Copy for Windows                              
+-------------------------------------------------------------------------------
+
+  Started : 08/06/2024 08:31:49
+            Cú pháp :: robocopy <Source> <Destination> [<File>[ ...]] [<Options>]
+
+           <Source> :: Thư mục nguồn (drive:\path or \\server\share\path).
+      <Destination> :: Thư mục đích  (drive:\path or \\server\share\path).
+             <File> :: Chỉ định tệp hoặc tập hợp các tệp cần sao chép. Bạn có thể sử dụng các ký tự đại diện (* hoặc?), nếu muốn. Nếu tham số File không được chỉ định, các ký tự *. \ * sẽ được sử dụng làm giá trị mặc định.
+		  <Options> :: Chỉ định các tùy chọn được sử dụng với lệnh robocopy.
+
+::
+:: Tùy chọn sao chép :
+::
+                 /S :: Sao chép các thư mục con, nhưng không sao chép các thư mục trống.
+                 /E :: Sao chép các thư mục con, bao gồm cả các thư mục trống.
+             /LEV:n :: Chỉ sao chép các thư mục nằm trong N cấp cao nhất của cây thư mục.
+
+                 /Z :: Sao chép tệp ở chế độ có thể khởi động lại (restartable mode).
+                 /B :: Sao chép tệp ở chế độ sao lưu (Backup mode). Giúp để nguyên Ngày truy cập cuối cùng.
+                /ZB :: Sử dụng chế độ có thể khởi động lại (để có khả năng phục hồi cao hơn); nếu quyền truy cập bị từ chối, hãy sử dụng chế độ Sao lưu.
+                 /J :: Sao chép bằng I/O không có bộ đệm (được khuyến nghị cho các tệp lớn).
+            /EFSRAW :: Sao chép tất cả các tệp được mã hóa ở chế độ EFS RAW.
+
+  /COPY:copyflag[s] :: Chỉ định các thuộc tính của tệp cần được sao chép (mặc định là /COPY:DAT).
+                       (Cờ copy : D=Dữ liệu, A=Thuộc tính, T=Dấu thời gian, X=Bỏ qua luồng dữ liệu thay thế).
+                       (S=Bảo mật=NTFS ACLs, O=Thông tin chủ sở hữu, U=Thông tin kiểm tra).
+
+ 
+               /SEC :: Sao chép tệp có bảo mật (tương đương với tham số /copy:DATS).
+           /COPYALL :: Sao chép tất cả thông tin tệp (tương đương với tham số /copy:DATSOU).
+            /NOCOPY :: Không sao chép thông tin tệp (hữu ích khi sử dụng với tham số /PURGE).
+            /SECFIX :: Chỉnh sửa lại bảo mật tập tin (file security) trên tất cả các tệp, thậm chí là các tệp đã bị bỏ qua.
+					   Khi sử dụng tùy chọn sao chép /SECFIX, hãy chỉ định loại thông tin bảo mật mà bạn muốn sao chép bằng cách sử dụng một trong các tùy chọn sao chép bổ sung sau:
+						> - /COPYALL
+						> - /COPY:O
+						> - /COPY:S
+						> - /COPY:U
+						> - /SEC
+            /TIMFIX :: Chỉnh sửa lại thông tin về thời gian (file times) trên tất cả các tập tin, thậm chí là các tập tin đã bị bỏ qua.
+
+             /PURGE :: Xóa các tập tin/thư mục tại thư mục đích không còn tồn tại trong thư mục nguồn.
+               /MIR :: Phản chiếu cây thư mục (tương đương với tham số /E cộng với /PURGE).
+
+               /MOV :: Di chuyển tệp và xóa chúng ra khỏi nguồn sau khi chúng đã được sao chép.
+              /MOVE :: Di chuyển các tệp và thư mục và xóa chúng khỏi nguồn sau khi chúng đã được sao chép.
+
+     /A+:[RASHCNET] :: Thêm các thuộc tính được chỉ định vào các tệp được sao chép.
+     /A-:[RASHCNET] :: Loại bỏ các thuộc tính được chỉ định khỏi các tệp được sao chép.
+
+            /CREATE :: Chỉ TẠO cây thư mục và các tệp có dung lượng bằng 0.
+               /FAT :: Tạo tệp đích bằng cách chỉ sử dụng tên tệp FAT có độ dài ký tự là 8.3.
+               /256 :: Tắt hỗ trợ cho các đường dẫn quá dài (dài hơn 256 ký tự).
+
+             /MON:n :: Theo dõi các thay đổi trong thư mục nguồn, chạy lại khi có nhiều hơn N thay đổi được phát hiện.
+             /MOT:m :: Theo dõi các thay đổi trong thư mục nguồn N phút một lần và đồng bộ hóa nó với đích.
+
+      /RH:hhmm-hhmm :: Chỉ định thời gian chạy - thời điểm các bản sao mới có thể được bắt đầu.
+                /PF :: Kiểm tra số giờ chạy trên cơ sở Mỗi tệp (không phải mỗi lượt).
+
+             /IPG:n :: Chỉ định khoảng cách giữa các gói với băng thông tự do trên các đường truyền chậm.
+ 
+                /SJ :: Sao chép Giao lộ (Junctions) dưới dạng nút giao thay vì mục tiêu giao lộ.
+                /SL :: Sao chép Liên kết tượng trưng (Symbolic Links) dưới dạng liên kết thay vì làm mục tiêu liên kết.
+
+            /MT[:n] :: Tạo các bản sao đa luồng với N luồng. N phải là số nguyên từ 1 đến 128. Giá trị mặc định cho N là 8.
+                       Tham số /MT không thể được sử dụng chung với tham số /IPG và /EFSRAW.
+                       Chuyển hướng cho tệp đầu ra bằng cách sử dụng tùy chọn /LOG sẽ cho hiệu suất tốt hơn.
+					   Lưu ý: Tham số /MT chỉ áp dụng cho Windows Server 2008 R2 và Windows 7.
+
+ /DCOPY:copyflag[s] :: Những gì cần SAO CHÉP cho các thư mục (mặc định là /DCOPY:DA).
+					   (Cờ copy : D=Dữ liệu, A=Thuộc tính, T=Dấu thời gian, E=EAs, X=Bỏ qua luồng dữ liệu thay thế).
+
+           /NODCOPY :: Không sao chép thông tin thư mục (mặc định /DCOPY:DA là xong).
+
+         /NOOFFLOAD :: Sao chép file mà không sử dụng cơ chế Windows Copy Offload.
+
+          /COMPRESS :: Yêu cầu nén mạng trong khi truyền tệp, nếu có.
+
+::
+:: File Selection Options :
+::
+                 /A :: Chỉ sao chép các tệp mà có thuộc tính lưu trữ (Archive) được đặt.
+                 /M :: Chỉ sao chép các tệp mà thuộc tính Archive được đặt và sau đó sẽ reset lại thuộc tính Archive.
+    /IA:[RASHCNETO] :: Chỉ lựa chọn các tệp được đặt tất cả các thuộc tính theo chỉ định. Các giá trị hợp lệ cho tùy chọn này là:
+						R - Chỉ đọc
+						A - Lưu trữ
+						S - Hệ thống
+						H - Ẩn
+						C - Nén
+						N - Không lập chỉ mục nội dung
+						E - Đã Mã Hóa
+						T - Tạm thời
+						O - Ngoại tuyến
+    /XA:[RASHCNETO] :: Loại trừ các tệp mà được đặt tất cả các thuộc tính theo chỉ định. Các giá trị hợp lệ cho tùy chọn này giống bên trên.
+
+ /XF file [file]... :: Loại trừ các tệp khớp với tên hoặc đường dẫn được chỉ định. Lưu ý rằng FileName có thể bao gồm cả các ký tự đại diện (* và?).
+ /XD dirs [dirs]... :: Loại trừ các thư mục khớp với các tên và đường dẫn được chỉ định.
+
+                /XC :: Loại trừ các tập tin đã thay đổi (loại trừ các tệp có cùng dấu thời gian nhưng kích thước tệp khác nhau).
+                /XN :: Loại trừ các tệp mới hơn (Các tệp trong thư mục nguồn mới hơn đích sẽ bị loại khỏi bản sao). Tùy chọn này nhằm giữ lại phiên bản cũ hơn ở Đích, tránh bị ghi đè.
+                /XO :: Loại trừ các tập tin cũ hơn (Các tệp trong thư mục nguồn cũ hơn đích sẽ bị loại khỏi bản sao). Nghĩa là tại Đích đang có phiên bản mới hơn.
+
+				Trường hợp cần đồng bộ 2 chiều giữa 2 thư mục f1 và f2 thì làm như sau:
+				a) Dùng f1 làm nguồn, f2 làm đích. Chạy Robocopy với /XN, sẽ loại trừ tệp có bản sao mới hơn tại f2 nhưng ghi đè mọi tệp có bản sao cũ hơn tại f2.
+				b) Dùng f2 làm nguồn, f1 làm đích. Chạy Robocopy với /XN, sẽ loại trừ tệp có bản sao mới hơn tại f1 nhưng ghi đè mọi tệp có bản sao cũ hơn tại f1.
+                /XX :: Loại trừ các tệp và thư mục bổ sung có ở đích nhưng không có ở nguồn. Việc loại trừ các tệp bổ sung sẽ không xóa các tệp khỏi đích. Vì khóa chuyển /XX loại trừ các tệp bổ sung khỏi quá trình xử lý tiếp theo nên khóa chuyển /PURGE không có hiệu lực khi /XX cũng được sử dụng.
+                /XL :: Loại trừ các tệp và thư mục riêng lẻ. Tệp tồn tại ở nguồn nhưng không tồn tại ở đích (tệp Cô đơn), có thể vì chúng mới được tạo ở nguồn, mặc định sẽ được sao chép sang đích. Nhưng nếu muốn bỏ qua, sử dụng /XL.
+                /IS :: Bao gồm các tập tin tương tự. Các tệp giống hệt nhau về tên, kích thước, thời gian và tất cả các thuộc tính. Mặc định sẽ bỏ qua vì không cần sao chép, nhưng nếu vẫn muốn chọn thì thêm vào /IS.
+                /IT :: Lựa chọn các tập tin đã được "tinh chỉnh" (Tweaked). Tệp nguồn và tệp đích có dấu thời gian và kích thước tệp giống nhau nhưng thuộc tính (attributes) khác nhau. Tệp được sao chép vì /IT đã được chỉ định; để bỏ qua tập tin này, hãy bỏ qua /IT.
+
+             /MAX:n :: Chỉ định kích thước tệp tối đa (để loại trừ các tệp lớn hơn n byte).
+             /MIN:n :: Chỉ định kích thước tệp tối thiểu (để loại trừ các tệp nhỏ hơn n byte).
+
+          /MAXAGE:n :: Chỉ định “độ tuổi” tối đa của tệp (để loại trừ các tệp có ngày sửa đổi cũ hơn N ngày trở lên). 
+          /MINAGE:n :: Chỉ định “độ tuổi” tối thiểu của tệp (để loại trừ các tệp có ngày sửa đổi tính từ N ngày đến hiện tại, tức ngày sửa đổi lần cuối mới hơn N ngày). 
+          /MAXLAD:n :: Chỉ định ngày cuối cùng truy cập vào tệp (ngày mở hoặc xem thuộc tính tệp, nó luôn mới hơn ngày tạo và sửa đổi) cách thời điểm hiện tại lâu nhất là bao nhiêu (nghĩa là không chọn các tệp đã không được sử dụng kể từ N ngày trước trở đi). Nếu ngày nào cũng đồng bộ, có thể đặt maxlad:3 để giới hạn chỉ đồng bộ các tệp có ngày truy cập cách thời điểm hiện tại nhiều nhất là 3 ngày, còn thời điểm truy cập lâu hơn nữa thì bỏ qua.
+          /MINLAD:n :: Chỉ định mốc thời gian cuối cùng truy cập vào tệp cách thời điểm hiện tại ít nhất là bao nhiêu (nghĩa là không chọn các tệp đã được sử dụng kể từ N ngày trước cho đến hiện tại). Nếu N nhỏ hơn 1900, N sẽ chỉ định số ngày. Nếu không, N sẽ chỉ định mốc thời gian có định dạng YYYYMMDD. Nếu đặt minlad:3, các tệp được truy cập trong vòng 3 ngày trở lại đây sẽ không được đồng bộ, điều này đảm bảo thư mục đích chính là bản sao lưu của thư mục nguồn 3 ngày trước. Nhưng điều này không cần thiết bởi có thể thiết lập trong /MOD:m.
+				
+						Nếu bạn muốn loại trừ các tệp chưa được truy cập kể từ ngày 10 tháng 1 năm 2018 trở về quá khứ:
+						Robocopy c:\projects c:\backup /maxlad:20180110
+						Có nghĩa là sẽ chỉ sao chép các tệp được truy cập kể từ ngày 10/01/2018 đến hiện tại.
+
+						Tương tự, bạn thậm chí có thể loại trừ việc sao chép các tệp được sử dụng thường xuyên. Robocopy có thể thực hiện việc này bằng cách sử dụng lệnh Robocopy source [destination] /minlad:n[YYYYMMDD] , lệnh này mô tả số ngày truy cập cuối cùng tối thiểu, nghĩa là nó sẽ loại trừ các tệp được sử dụng kể từ ngày/ngày được chỉ định.
+
+						Nếu bạn muốn loại trừ các tệp được truy cập kể từ ngày 10 tháng 1 năm 2018 đến hiện tại:
+						Robocopy c:\projects c:\backup /minlad:[20180110]
+
+						Khi đặt robocopy source destination*.* /mov /minage:10 thì sẽ sao chép các tệp có ngày sửa đổi tính từ 10 ngày trước trở đi sang thư mục đích, sau đó xóa các tệp này tại thư mục nguồn. Điều này tương đương với việc di chuyển tất cả tệp cũ khỏi thư mục nguồn, chỉ giữ lại thư mục nguồn các tệp được sửa đổi/tạo trong vòng 10 ngày qua. Tương tự, nếu sử dụng /minlad:10 thì chỉ giữ lại thư mục nguồn các tệp được truy cập trong vòng 10 ngày.
+
+               /FFT :: Giả sử Thời gian tệp FAT (độ chính xác 2 giây).
+               /DST :: Bù lại cho chênh lệch thời gian DST trong một giờ.
+
+                /XJ :: Loại trừ các liên kết tượng trưng (cho cả tệp và thư mục) và các điểm nối. Tham số này thường sẽ được áp dụng theo mặc định.
+               /XJD :: Loại trừ các liên kết tượng trưng cho các Thư mục và Điểm nối.
+               /XJF :: Loại trừ các liên kết tượng trưng cho Tệp.
+
+                /IM :: Bao gồm các tệp đã sửa đổi (thời gian thay đổi khác nhau).
+::
+:: Tùy chọn thử lại :
+::
+               /R:n :: Số lần thử lại trên các bản sao chép không thành công: mặc định là 1 triệu.
+               /W:n :: Thời gian chờ giữa các lần thử lại: mặc định là 30 giây.
+
+               /REG :: Lưu /R:n và /W:n trong Registry làm cài đặt mặc định.
+
+               /TBD :: Đợi tên chia sẻ được xác định (thử lại lỗi 67).
+
+              /LFSM :: Hoạt động ở chế độ dung lượng trống thấp, cho phép tạm dừng và tiếp tục sao chép (xem Ghi chú).
+
+       /LFSM:n[KMG] :: /LFSM, chỉ định kích thước sàn theo n [K:kilo,M:mega,G:giga] byte.
+
+::
+:: Tùy chọn ghi nhật ký :
+::
+                 /L :: Chỉ định rằng các tệp sẽ chỉ được liệt kê mà thôi (và không được sao chép, xóa hoặc đóng dấu thời gian).
+						Gõ lệnh robocopy... /TS /L sẽ giúp kiểm tra xem sau khi chạy thì robocopy sẽ thực hiện sao chép những tệp/thư mục nào.
+                 /X :: Báo cáo tất cả các tệp phụ, không chỉ các tệp được chọn.
+                 /V :: Tạo kết quả đầu ra chi tiết và hiển thị tất cả các tập tin bị bỏ qua.
+                /TS :: Đính kèm cả khoảng thời gian của tệp nguồn ở kết quả đầu ra.
+                /FP :: Bao gồm tên đường dẫn đầy đủ của các tệp trong kết quả đầu ra.
+             /BYTES :: In kích thước dưới dạng byte.
+
+                /NS :: Không có kích thước - không ghi kích thước tệp.
+                /NC :: Không có lớp - không ghi nhật ký các lớp tệp.
+               /NFL :: Không có danh sách tệp - không ghi tên tệp.
+               /NDL :: Không có danh sách thư mục - không ghi tên thư mục.
+
+                /NP :: Chỉ định rằng thông tin về tiến trình của thao tác sao chép (số lượng tệp hoặc thư mục được sao chép cho đến thời điểm hiện tại) sẽ không được hiển thị.
+               /ETA :: Hiển thị thời gian hoàn tất theo dự dự kiến của các tệp được sao chép.
+
+          /LOG:file :: Trạng thái xuất ra tệp LOG (ghi đè nhật ký hiện có).
+         /LOG+:file :: Trạng thái đầu ra thành tệp LOG (thêm vào nhật ký hiện có).
+
+       /UNILOG:file :: Trạng thái xuất sang tệp LOG dưới dạng UNICODE (ghi đè nhật ký hiện có).
+      /UNILOG+:file :: Trạng thái xuất sang tệp LOG dưới dạng UNICODE (thêm vào nhật ký hiện có).
+
+               /TEE :: Xuất ra cửa sổ bảng điều khiển cũng như tệp nhật ký.
+
+               /NJH :: Không có Tiêu đề Công việc.
+               /NJS :: Không có tóm tắt công việc.
+
+           /UNICODE :: Trạng thái đầu ra là UNICODE.
+
+::
+:: Lựa chọn công việc :
+::
+       /JOB:jobname :: Chỉ định rằng các tham số sẽ được bắt nguồn từ tệp công việc được đặt tên (named job file).
+      /SAVE:jobname :: LƯU tham số vào file công việc đã đặt tên
+              /QUIT :: Chỉ định thoát sau khi xử lý dòng lệnh (để xem tham số).
+              /NOSD :: Chỉ ra rằng không có thư mục nguồn nào được chỉ định.
+              /NODD :: Chỉ ra rằng không có thư mục đích nào được chỉ định.
+                /IF :: Bao gồm các Tệp sau.
+
+		Các mã thoát (kết quả trả về)
+		Giá trị/	Mô tả
+		1	Không có tệp nào được sao chép. Không gặp phải bất cứ lỗi nào. Tất cả các tệp đều khớp. Các tệp đã tồn tại trong thư mục đích. Do đó, thao tác sao chép không thể thực hiện được và đã bị bỏ qua.
+		2	Tất cả các tệp đã được sao chép thành công.
+		3	Có một số tệp bổ sung trong thư mục đích không có trong thư mục nguồn. Không có tệp nào được sao chép.
+		4	Một số tệp đã được sao chép. Các tệp bổ sung đã được phát hiện. Không gặp phải lỗi nào.
+		5	Một số tệp đã được sao chép. Một vài tệp không khớp nhau. Không gặp phải lỗi nào.
+		6	Đã phát hiện các tệp bổ sung và tệp không khớp. Không có tệp nào được sao chép và cũng không gặp phải lỗi nào. Điều này có nghĩa là các tệp đã tồn tại trong thư mục đích.
+		7	Các tệp đã được sao chép, tệp không khớp và các tệp bổ sung đã đã được phát hiện.
+		8	Một số tệp không thể sao chép được.
+		Bất kỳ giá trị nào lớn hơn 8 sẽ chỉ ra rằng có ít nhất một lỗi nào đó xảy ra trong quá trình sao chép.
+::
+:: Chú thích :
+::
+       Tham số tùy chọn /mir là tương đương với các tùy chọn /e cùng với /purge, chỉ có một số khác biệt nhỏ về hành vi như sau: 
+		Với các tùy chọn /e và /purge, nếu thư mục đích tồn tại, các thiết lập bảo mật thư mục đích sẽ không bị ghi đè.
+		Với tùy chọn /mir, nếu thư mục đích tồn tại, các thiết lập bảo mật thư mục đích sẽ bị ghi đè.
+
+       Việc phân loại tệp đã sửa đổi chỉ áp dụng khi cả hệ thống tệp nguồn và đích đều hỗ trợ dấu thời gian thay đổi (ví dụ: NTFS) và tệp nguồn và tệp đích có thời gian thay đổi khác nhau nhưng về mặt khác thì giống nhau. Những tập tin này không được sao chép theo mặc định; chỉ định /IM để bao gồm chúng.
+
+       Cờ /DCOPY:E yêu cầu sao chép thuộc tính mở rộng nên được thử cho các thư mục. Lưu ý rằng hiện tại Robocopy sẽ tiếp tục nếu không thể sao chép EA của thư mục. Cờ này cũng không có trong /COPYALL.
+
+       Việc sử dụng /LFSM yêu cầu Robocopy hoạt động ở 'chế độ dung lượng trống thấp'. Trong chế độ đó, Robocopy sẽ tạm dừng bất cứ khi nào một bản sao tệp làm cho dung lượng trống của ổ đĩa đích xuống dưới giá trị 'sàn', giá trị này có thể được chỉ định rõ ràng bằng biểu mẫu cờ LFSM:n[KMG]. Nếu /LFSM được chỉ định không có giá trị sàn rõ ràng thì giá trị sàn được đặt thành 10 phần trăm kích thước của ổ đĩa đích. Chế độ không gian trống thấp không tương thích với /MT, /EFSRAW, /B và /ZB.

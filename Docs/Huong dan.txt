@@ -1,0 +1,44 @@
+〖 1 〗 Phần mềm được xây dựng là sự kết hợp giữa các lệnh sao lưu, dự phòng bằng Powershell và robocopy. Khi Khởi chạy, phần mềm sẽ kiểm tra thư mục Nguồn và Đích, sau đó:
+    - Nếu phát hiện tại Nguồn có thư mục hoặc tệp tin đã đổi tên thì sẽ đổi tên cho bản sao tại Đích. 
+    - Nếu phát hiện tại Nguồn có thư mục hoặc tệp tin đã bị xóa hoặc được chỉnh sửa thì sẽ di chuyển phiên bản cũ hơn tại Đích vào Thùng rác hoặc thư mục Dự phòng (tùy vào thiết lập của bạn). 
+    - Sau khi làm xong hai việc trên, sẽ chạy robocopy với các thiết lập /MIR /COPYALL /DCOPY:DAT /Z /IT để sao chép các thư mục và tệp tin mới (hoặc có phiên bản khác với Đích) để ghi đè sang Đích. 
+
+Toàn bộ thông tin, bao gồm cả phân quyền đều sẽ được sao chép, do đó bạn cần mở phần mềm bằng cách chuột phải và chọn "Run as admin", nếu không, phần mềm sẽ không hoạt động được. 
+
+〖 2 〗 Nhập đường dẫn cho Nguồn và Đích theo dạng: D:\ThuMucCuaBan. Lưu ý, khi bấm đúp vào ô đường dẫn, mọi nội dung tại đây đều sẽ được bôi đen. 
+
+〖 3 〗 Nguồn có thể là một thư mục hoặc ổ đĩa, nhưng Đích chỉ có thể là thư mục. Nếu bạn đặt Đích là ổ đĩa, phần mềm sẽ từ chối đồng bộ. 
+
+〖 4 〗 Mặc định, các tệp/thư mục của Đích khác với Nguồn sẽ được đưa vào thùng rác. Nếu bạn tắt tùy chọn này, các tệp/thư mục khác biệt sẽ bị ghi đè và xóa rỗng, chỉ có thể lấy lại nếu dùng phần mềm khôi phục dữ liệu. 
+
+〖 5 〗 Bạn có thể đưa các tệp/thư mục của Đích khác với Nguồn vào một thư mục Dự phòng, lúc này, tùy chọn Thùng rác sẽ được tắt. 
+
+〖 6 〗 Nếu có nhiều hơn một Nguồn cần đồng bộ, hãy chọn 'Thêm nữa', cửa sổ phần mềm sẽ được mở rộng để bạn thêm vào tối đa 4 Nguồn khác. Như vậy, phần mềm này cho phép bạn đồng bộ tối đa 5 Nguồn. Nếu có nhiều hơn 5 Nguồn cần đồng bộ, bạn chỉ cần chuột phải vào phần mềm, "Run as admin" để mở thêm một cửa sổ làm việc mới. 
+
+〖 7 〗 Mặc định, phần mềm sẽ chạy kiểm tra và sao lưu sau mỗi 60 giây, bạn có thể chỉnh lại thời gian này, nhưng không được nhỏ hơn 5 giây. Theo kinh nghiệm của tôi, tốt nhất nên từ 60 giây trở lên, bởi trong 60 giây thì thư mục Nguồn của bạn sẽ chưa có nhiều thay đổi đáng kể. Nhưng mọi quyết định nằm ở bạn! 
+
+    Lưu ý: Đối với những Nguồn có hàng chục nghìn thư mục và tệp tin, việc kiểm tra và sao lưu sẽ cần thời gian. Để biết nên thiết lập thời gian sao lưu sau mỗi bao nhiêu giây thì hợp lý, hãy nhập đường dẫn cho mọi Nguồn và Đích bạn cần, sau đó bấm 'Tính thời gian', phần mềm sẽ báo cho bạn biết với lượng dữ liệu hiện tại thì tốt nhất nên thiết lập thời gian là bao nhiêu. 
+
+〖 8 〗 Nếu chọn 'Khởi động cùng Windows', phần mềm sẽ tự động mở mỗi lần Windows được khởi động. 
+
+〖 9 〗 Nếu chọn 'Tự động chạy', mỗi khi phần mềm được mở, nó sẽ tự chạy sao lưu mà không cần bạn phải bấm vào nút 'Khởi chạy'. Kết hợp giữa 'Khởi động cùng Windows' và 'Tự động chạy', sẽ đảm bảo rằng việc sao lưu các thư mục của bạn sẽ luôn diễn ra mà không cần bạn phải can thiệp. 
+
+〖 10 〗 Khi chọn 'Mở báo cáo', cửa sổ phần mềm sẽ mở rộng thêm một bảng phụ để bạn theo dõi cách các tệp tin và thư mục được xử lý, có mục nào mới được thêm vào Nguồn, mục nào mới được đổi tên, mục nào sẽ được đồng bộ hoặc bị xóa, v.v.. 
+
+Chức năng 'Mở báo cáo' sẽ bị khóa nếu tùy chọn 'Thêm nữa' được bật, bởi xem báo cáo của nhiều Nguồn cùng lúc là không cần thiết. 
+
+〖 11 〗 Sau khi nhập đầy đủ các đường dẫn Nguồn và Đích, thiết lập xong các tùy chọn, hãy bấm vào nút 'Lưu cấu hình'. Các thiết lập của bạn sẽ được lưu tại HKEY_CURRENT_USER\SOFTWARE\SaoLuuMini. Chỉ sau khi cấu hình được lưu, tùy chọn 'Tự động chạy' mới có thể hoạt động. 
+
+〖 12 〗 Khi phần mềm đang chạy sao lưu, nó sẽ bị khóa, không cho phép tắt đi để đảm bảo an toàn dữ liệu. Nếu muốn tắt phần mềm, bạn cần bấm nút 'Ngừng lại', sau đó tắt chương trình. 
+
+〖 13 〗 Khi bấm 'Ẩn xuống', phần mềm sẽ được ẩn vào khay hệ thống và vẫn tiếp tục công tác sao lưu nếu trước đó đang được khởi chạy. 
+
+〖 14 〗 Trường hợp cả thư mục mẹ và thư mục con hoặc tệp tin bên trong đều được đổi tên. Phần mềm sẽ đổi tên thư mục mẹ trước, sau đó, nó sẽ báo không thể đổi tên thư mục con hoặc tệp tin bên trong. Đây là một báo lỗi giả, bạn không cần bận tâm. 
+
+〖 15 〗 Phần mềm SaoLuuMini 1.0 được viết bởi facebook.com/nqhaivn/, phát hành ngày 19/06/2024. 
+
+    Mọi hành vi chỉnh sửa lại mã nguồn mà chưa được sự đồng ý bằng văn bản của tác giả thì đều là trộm cắp. 
+
+    Mọi góp ý, báo lỗi, có nhu cầu tùy chỉnh phần mềm theo sở thích của bản thân hoặc muốn đề nghị thiết kế phần mềm khác, vui lòng liên lạc với email: nqhai86@gmail.com
+
+    Trân trọng!
